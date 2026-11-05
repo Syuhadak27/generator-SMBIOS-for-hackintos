@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>GenSMBIOS — Web UI</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="glow glow-a"></div>
+  <div class="glow glow-b"></div>
+
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">◈</div>
+      <div>
+        <h1>GenSMBIOS</h1>
+        <p>Web UI lokal · macserial</p>
+      </div>
+    </div>
+    <div class="status" id="status">
+      <span class="dot" id="statusDot"></span>
+      <span id="statusText">Memeriksa MacSerial…</span>
+    </div>
+  </header>
+
+  <main>
+    <section class="card span2">
+      <div class="card-head">
+        <div>
+          <h2>Generate SMBIOS</h2>
+          <p class="sub">Serial, board serial, SmUUID, dan ROM dibuat oleh macserial.</p>
+        </div>
+        <span class="badge" id="genBadge">Siap</span>
+      </div>
+
+      <form id="genForm" class="gen-form">
+        <div class="field grow">
+          <label for="model">Model</label>
+          <input id="model" list="modelList" placeholder="iMac18,3" autocomplete="off" spellcheck="false" required>
+          <datalist id="modelList"></datalist>
+        </div>
+        <div class="field count">
+          <label for="count">Jumlah</label>
+          <input id="count" type="number" min="1" max="20" value="1">
+        </div>
+        <div class="field grow">
+          <label for="args">Additional args <span class="muted">(opsional)</span></label>
+          <input id="args" placeholder="-y 2019 -c 0x1" autocomplete="off" spellcheck="false">
+        </div>
+        <button class="btn primary" type="submit" id="genBtn">Generate</button>
+      </form>
+
+      <div id="results" class="results empty">
+        <p>Pilih model (mis. <code>iMac18,3</code>), tentukan jumlah, lalu tekan <b>Generate</b>.</p>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-head">
+        <h2>UUID</h2>
+      </div>
+      <div class="value-row">
+        <code id="uuidValue">—</code>
+        <button class="btn ghost" data-copy="uuidValue" type="button">Salin</button>
+      </div>
+      <button class="btn" id="uuidBtn" type="button">Generate UUID</button>
+    </section>
+
+    <section class="card">
+      <div class="card-head">
+        <h2>ROM</h2>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="romPrefix" checked>
+        <span>Gunakan prefix Apple</span>
+      </label>
+      <div class="value-row">
+        <code id="romValue">—</code>
+        <button class="btn ghost" data-copy="romValue" type="button">Salin</button>
+      </div>
+      <button class="btn" id="romBtn" type="button">Generate ROM</button>
+    </section>
+
+    <section class="card span2">
+      <div class="card-head">
+        <div>
+          <h2>config.plist</h2>
+          <p class="sub">Terapkan hasil generate ke config.plist OpenCore / Clover.</p>
+        </div>
+        <span class="badge" id="plistBadge">Belum ada file</span>
+      </div>
+      <div class="plist-row">
+        <input type="file" id="plistFile" accept=".plist,application/xml,application/octet-stream">
+        <select id="plistType" aria-label="Tipe plist">
+          <option value="auto">Deteksi otomatis</option>
+          <option value="opencore">OpenCore</option>
+          <option value="clover">Clover</option>
+        </select>
+      </div>
+      <p class="muted small">File hanya dibaca di browser dan diproses oleh server lokal. Tidak disimpan ke disk. Hasil unduhan memakai nama file yang sama.</p>
+    </section>
+
+    <section class="card span2">
+      <div class="card-head">
+        <h2>Daftar Model</h2>
+        <input id="modelSearch" class="search" placeholder="Cari model…" autocomplete="off">
+      </div>
+      <div id="modelTable" class="model-list">
+        <p class="muted">Memuat daftar model…</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    GenSMBIOS Web UI · berjalan lokal · <span id="footerVersion">macserial —</span>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
